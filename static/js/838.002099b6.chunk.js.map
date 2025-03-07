@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/838.002099b6.chunk.js","mappings":"wJAEA,MAIA,EAJeA,KACNC,EAAAA,EAAAA,KAAA,OAAAC,SAAK,U","sources":["contents/charts/index.tsx"],"sourcesContent":["import React from \"react\";\n\nconst Charts = () => {\n  return <div>Charts</div>;\n};\n\nexport default Charts;\n"],"names":["Charts","_jsx","children"],"sourceRoot":""}

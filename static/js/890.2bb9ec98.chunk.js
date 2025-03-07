@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkmy_ts_app=self.webpackChunkmy_ts_app||[]).push([[890],{1890:(e,t,s)=>{s.r(t),s.d(t,{default:()=>a});s(2791);var n=s(184);const a=()=>(0,n.jsx)("div",{style:{width:"100%",height:"100vh",margin:"auto",display:"flex",justifyContent:"center",alignItems:"center"},children:(0,n.jsx)("div",{style:{margin:"auto"},children:(0,n.jsx)("h1",{children:"Page not found !"})})})}}]);
+//# sourceMappingURL=890.2bb9ec98.chunk.js.map

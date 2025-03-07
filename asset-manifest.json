@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/static/css/main.a71b3999.css",
+    "main.js": "/static/js/main.aa208ba7.js",
+    "static/js/887.e62968a9.chunk.js": "/static/js/887.e62968a9.chunk.js",
+    "static/js/164.832fd3d2.chunk.js": "/static/js/164.832fd3d2.chunk.js",
+    "static/js/665.e3239c60.chunk.js": "/static/js/665.e3239c60.chunk.js",
+    "static/js/699.bc4da6a2.chunk.js": "/static/js/699.bc4da6a2.chunk.js",
+    "static/js/838.002099b6.chunk.js": "/static/js/838.002099b6.chunk.js",
+    "static/js/890.2bb9ec98.chunk.js": "/static/js/890.2bb9ec98.chunk.js",
+    "static/media/gsynergyLogo.svg": "/static/media/gsynergyLogo.80cbd1a26e9f0b697903825562a1b6ee.svg",
+    "index.html": "/index.html",
+    "main.a71b3999.css.map": "/static/css/main.a71b3999.css.map",
+    "main.aa208ba7.js.map": "/static/js/main.aa208ba7.js.map",
+    "887.e62968a9.chunk.js.map": "/static/js/887.e62968a9.chunk.js.map",
+    "164.832fd3d2.chunk.js.map": "/static/js/164.832fd3d2.chunk.js.map",
+    "665.e3239c60.chunk.js.map": "/static/js/665.e3239c60.chunk.js.map",
+    "699.bc4da6a2.chunk.js.map": "/static/js/699.bc4da6a2.chunk.js.map",
+    "838.002099b6.chunk.js.map": "/static/js/838.002099b6.chunk.js.map",
+    "890.2bb9ec98.chunk.js.map": "/static/js/890.2bb9ec98.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a71b3999.css",
+    "static/js/main.aa208ba7.js"
+  ]
+}
