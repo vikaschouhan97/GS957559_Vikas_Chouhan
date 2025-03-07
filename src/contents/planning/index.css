@@ -1,0 +1,42 @@
+.green-color {
+  background-color: #4caf50;
+  color: white;
+}
+
+.yellow-color {
+  background-color: #ffc107;
+  color: black;
+}
+
+.orange-color {
+  background-color: #ff9800;
+  color: black;
+}
+
+.red-color {
+  background-color: #e57373;
+  color: white;
+}
+
+.ag-header {
+  background-color: rgb(243, 243, 243);
+  font-family: Poppins;
+  border: none;
+}
+
+.ag-header-cell-comp-wrapper {
+  color: rgb(104, 104, 104);
+  justify-content: center;
+}
+
+.ag-header-cell-sortable .ag-header-cell-label {
+  justify-content: center;
+}
+
+.ag-cell {
+    font-family: Poppins;
+}
+
+.ag-header-cell-resize {
+    width: 4px;
+}

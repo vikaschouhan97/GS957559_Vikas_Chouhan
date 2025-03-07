@@ -28,7 +28,7 @@ const SideNavigation = () => {
           <ListItem
             key={`${item.id}-${index}`}
             disablePadding
-            selected={item.name === "Planning"}
+            selected={window.location.href.includes(item.link)}
             sx={{
               "&.Mui-selected": {
                 background: "#d0d0d0",
