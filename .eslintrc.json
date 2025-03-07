@@ -1,0 +1,134 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+        "react",
+        "@typescript-eslint"
+    ],
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "env": {
+        "browser": true,
+        "es6": true,
+        "jest": true
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    },
+    "rules": {
+        "no-console": 2,
+        "interface-name": "off",
+        "radix": "off",
+        "no-var-requires": "off",
+        "semi": [
+            "error",
+            "always"
+        ],
+        "object-literal-sort-keys": "off",
+        "jsx-no-string-ref": "off",
+        "no-shadowed-variable": "off",
+        "no-submodule-imports": "off",
+        "max-line-length": "off",
+        "no-useless-escape": "off",
+        "no-fallthrough": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-inferrable-types": "off",
+        "react/display-name": [
+            "off",
+            {
+                "ignoreTranspilerName": true
+            }
+        ],
+        "react/react-in-jsx-scope": "off",
+        "@typescript-eslint/no-var-requires": "off",
+        "@typescript-eslint/triple-slash-reference": "off",
+        "@typescript-eslint/ban-ts-comment": "off",
+        "@typescript-eslint/ban-types": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "eol-last": "error",
+        "no-multiple-empty-lines": [
+            "error",
+            {
+                "max": 2,
+                "maxEOF": 0
+            }
+        ],
+        "@typescript-eslint/naming-convention": [
+            "error",
+            {
+                "selector": "interface",
+                "format": [
+                    "PascalCase"
+                ],
+                "custom": {
+                    "regex": "^I[A-Z]",
+                    "match": true
+                }
+            },
+            {
+                "selector": "enum",
+                "format": [
+                    "PascalCase"
+                ],
+                "custom": {
+                    "regex": "^E[A-Z]",
+                    "match": true
+                }
+            },
+            {
+                "selector": "enumMember",
+                "format": [
+                    "UPPER_CASE"
+                ]
+            },
+            {
+                "selector": "class",
+                "format": [
+                    "PascalCase"
+                ]
+            },
+            {
+                "selector": "variable",
+                "format": [
+                    "PascalCase",
+                    "camelCase",
+                    "UPPER_CASE"
+                ]
+            }
+        ]
+    },
+    "ignorePatterns": [
+        "dist/*.js",
+        "src/*d.ts"
+    ],
+    "overrides": [
+        {
+            "files": [
+                "**/*.tsx"
+            ],
+            "rules": {
+                "react/prop-types": "off"
+            }
+        },
+        {
+            // rules for js: no single quote, no semi, allow variable decl w/out specifier
+            "files": [
+                "*.js"
+            ],
+            "rules": {
+                "no-undef": [
+                    0
+                ],
+                "quotes": [
+                    "error",
+                    "double"
+                ]
+            }
+        }
+    ]
+}
