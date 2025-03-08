@@ -1,11 +1,11 @@
 {
   "files": {
     "main.css": "/static/css/main.a71b3999.css",
-    "main.js": "/static/js/main.61580a11.js",
+    "main.js": "/static/js/main.f13a5cf9.js",
     "static/css/234.7f3f0675.chunk.css": "/static/css/234.7f3f0675.chunk.css",
     "static/js/234.b11bf69d.chunk.js": "/static/js/234.b11bf69d.chunk.js",
     "static/css/393.7f3f0675.chunk.css": "/static/css/393.7f3f0675.chunk.css",
-    "static/js/393.ad2b0d7c.chunk.js": "/static/js/393.ad2b0d7c.chunk.js",
+    "static/js/393.6317b346.chunk.js": "/static/js/393.6317b346.chunk.js",
     "static/css/565.809dbb38.chunk.css": "/static/css/565.809dbb38.chunk.css",
     "static/js/565.ca4dc758.chunk.js": "/static/js/565.ca4dc758.chunk.js",
     "static/css/838.809dbb38.chunk.css": "/static/css/838.809dbb38.chunk.css",
@@ -20,11 +20,11 @@
     "static/media/gsynergyLogo.svg": "/static/media/gsynergyLogo.80cbd1a26e9f0b697903825562a1b6ee.svg",
     "index.html": "/index.html",
     "main.a71b3999.css.map": "/static/css/main.a71b3999.css.map",
-    "main.61580a11.js.map": "/static/js/main.61580a11.js.map",
+    "main.f13a5cf9.js.map": "/static/js/main.f13a5cf9.js.map",
     "234.7f3f0675.chunk.css.map": "/static/css/234.7f3f0675.chunk.css.map",
     "234.b11bf69d.chunk.js.map": "/static/js/234.b11bf69d.chunk.js.map",
     "393.7f3f0675.chunk.css.map": "/static/css/393.7f3f0675.chunk.css.map",
-    "393.ad2b0d7c.chunk.js.map": "/static/js/393.ad2b0d7c.chunk.js.map",
+    "393.6317b346.chunk.js.map": "/static/js/393.6317b346.chunk.js.map",
     "565.809dbb38.chunk.css.map": "/static/css/565.809dbb38.chunk.css.map",
     "565.ca4dc758.chunk.js.map": "/static/js/565.ca4dc758.chunk.js.map",
     "838.809dbb38.chunk.css.map": "/static/css/838.809dbb38.chunk.css.map",
@@ -39,6 +39,6 @@
   },
   "entrypoints": [
     "static/css/main.a71b3999.css",
-    "static/js/main.61580a11.js"
+    "static/js/main.f13a5cf9.js"
   ]
 }
