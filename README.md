@@ -1,6 +1,7 @@
 # Data Viewer Application
 
 This project is for viewing datas across multiple Stores and SKUs
+![alt text](image.png)
 
 ## Getting Started
 
