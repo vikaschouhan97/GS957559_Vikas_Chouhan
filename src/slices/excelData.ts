@@ -35,6 +35,8 @@ interface IExcelState {
   storeData: IStoreData[];
   skuData: ISkuData[];
   loader: boolean;
+  addStoreDialog: boolean;
+  addSkuDialog: boolean;
 }
 
 const initialState: IExcelState = {
@@ -42,6 +44,8 @@ const initialState: IExcelState = {
   storeData: [],
   skuData: [],
   loader: false,
+  addStoreDialog: false,
+  addSkuDialog: false,
 };
 
 const excelDataSlice = createSlice({
@@ -60,10 +64,16 @@ const excelDataSlice = createSlice({
     setExcelDataLoader: (state, action: PayloadAction<boolean>) => {
       state.loader = action.payload;
     },
+    setAddStoreDialog: (state, action: PayloadAction<boolean>) => {
+      state.addStoreDialog = action.payload;
+    },
+    setAddSkuDialog: (state, action: PayloadAction<boolean>) => {
+      state.addSkuDialog = action.payload;
+    },
   },
 });
 
-export const { setCalendarData, setStoreData, setSkuData, setExcelDataLoader } =
+export const { setCalendarData, setStoreData, setSkuData, setExcelDataLoader, setAddStoreDialog, setAddSkuDialog } =
   excelDataSlice.actions;
-  
+
 export const reducer = excelDataSlice.reducer;

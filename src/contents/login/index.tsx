@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../../components/navbar/navbar";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ const LoginPage: React.FC = () => {
 
   const handleLogin = async () => {
     if (validate()) {
-        const pass = process.env.REACT_APP_MAIL_PASSWORD;
+      const pass = process.env.REACT_APP_MAIL_PASSWORD;
       const res = await axios.post(
         `https://api.escuelajs.co/api/v1/auth/login`,
         {
@@ -51,48 +52,61 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="xs">
-      <Paper
-        elevation={3}
-        sx={{ padding: 4, marginTop: 8, textAlign: "center" }}
+    <>
+      <Navbar />
+      <Box
+        sx={{
+          width: "100vw",
+          height: "92vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
       >
-        <Typography variant="h5" gutterBottom>
-          Sign In
-        </Typography>
-        <Box component="form" noValidate autoComplete="off">
-          <TextField
-            fullWidth
-            label="Email"
-            variant="outlined"
-            margin="normal"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            error={!!errors.email}
-            helperText={errors.email}
-          />
-          <TextField
-            fullWidth
-            label="Password"
-            type="password"
-            variant="outlined"
-            margin="normal"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            error={!!errors.password}
-            helperText={errors.password}
-          />
-          <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            sx={{ marginTop: 2 }}
-            onClick={handleLogin}
+        <Container maxWidth="sm">
+          <Paper
+            elevation={3}
+            sx={{ padding: 4, marginTop: 8, textAlign: "center" }}
           >
-            Sign In
-          </Button>
-        </Box>
-      </Paper>
-    </Container>
+            <Typography variant="h5" gutterBottom>
+              Sign In
+            </Typography>
+            <Box component="form" noValidate autoComplete="off">
+              <TextField
+                fullWidth
+                label="Email"
+                variant="outlined"
+                margin="normal"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                error={!!errors.email}
+                helperText={errors.email}
+              />
+              <TextField
+                fullWidth
+                label="Password"
+                type="password"
+                variant="outlined"
+                margin="normal"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                error={!!errors.password}
+                helperText={errors.password}
+              />
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                sx={{ marginTop: 2 }}
+                onClick={handleLogin}
+              >
+                Sign In
+              </Button>
+            </Box>
+          </Paper>
+        </Container>
+      </Box>
+    </>
   );
 };
 

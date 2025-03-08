@@ -15,13 +15,14 @@ import {
 } from "ag-grid-community";
 import { MainWrapper } from "../planning";
 import * as XLSX from "xlsx";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { ISkuData, setSkuData } from "../../slices/excelData";
+import { ISkuData, setAddSkuDialog, setSkuData } from "../../slices/excelData";
 import { RootState } from "../../store";
 import "../store/index.css";
 import { DeleteButtonRenderer } from "../store";
 import { excelLinkUrl } from "../../constants";
+import AddSkuDialog from "./addSkuDialog";
 
 ModuleRegistry.registerModules([
   TextFilterModule,
@@ -127,6 +128,19 @@ const GridExample = () => {
           />
         </Box>
       </Box>
+      <Button
+        onClick={() => dispatch(setAddSkuDialog(true))}
+        sx={{
+          mt: 2,
+          background: "gray",
+          color: "#ffff",
+          px: 2,
+          "&:hover": { background: "gray", opacity: 0.7 },
+        }}
+      >
+        Add SKU
+      </Button>
+      <AddSkuDialog />
     </MainWrapper>
   );
 };

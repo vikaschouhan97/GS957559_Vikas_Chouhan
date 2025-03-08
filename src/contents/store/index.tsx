@@ -13,13 +13,18 @@ import {
 } from "ag-grid-community";
 import { MainWrapper } from "../planning";
 import * as XLSX from "xlsx";
-import { Box, IconButton } from "@mui/material";
+import { Box, Button, IconButton } from "@mui/material";
 import DeleteForeverSharpIcon from "@mui/icons-material/DeleteForeverSharp";
 import { useDispatch, useSelector } from "react-redux";
-import { IStoreData, setStoreData } from "../../slices/excelData";
+import {
+  IStoreData,
+  setAddStoreDialog,
+  setStoreData,
+} from "../../slices/excelData";
 import { RootState } from "../../store";
 import "./index.css";
 import { excelLinkUrl } from "../../constants";
+import AddStoreDialog from "./addStoreDialog";
 
 ModuleRegistry.registerModules([
   TextFilterModule,
@@ -155,6 +160,19 @@ const GridExample = () => {
           />
         </Box>
       </Box>
+      <Button
+        onClick={() => dispatch(setAddStoreDialog(true))}
+        sx={{
+          mt: 2,
+          background: "gray",
+          color: "#ffff",
+          px: 2,
+          "&:hover": { background: "gray", opacity: 0.7 },
+        }}
+      >
+        Add Store
+      </Button>
+      <AddStoreDialog />
     </MainWrapper>
   );
 };
