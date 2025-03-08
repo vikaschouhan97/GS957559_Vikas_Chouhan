@@ -134,7 +134,7 @@ function Navbar() {
                   startIcon={<CloudUploadIcon />}
                   sx={{ height: "32px" }}
                 >
-                  Upload files
+                  Upload file
                   <VisuallyHiddenInput type="file" onChange={handleFileUpload} multiple data-testid="file-input" />
                 </Button>
               </Box>
