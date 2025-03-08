@@ -9,9 +9,9 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-import { drawerWidth } from "./navbar";
+import { drawerWidth } from "../navbar/navbar";
 import Toolbar from "@mui/material/Toolbar";
-import { SideBarItems } from "../constants";
+import { SideBarItems } from "../../constants";
 import { useNavigate } from "react-router-dom";
 
 const SideNavigation = () => {

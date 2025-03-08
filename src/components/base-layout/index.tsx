@@ -2,8 +2,8 @@ import { FC, ReactNode } from "react";
 import PropTypes from "prop-types";
 import { Outlet } from "react-router-dom";
 import { Box, styled } from "@mui/system";
-import Navbar from "../navbar";
-import SideNavigation from "../sideNavigation";
+import Navbar from "../navbar/navbar";
+import SideNavigation from "../sideNavigation/sideNavigation";
 
 const Wrapper = styled(Box)(() => ({
     width: "100vw",

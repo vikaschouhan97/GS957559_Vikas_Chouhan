@@ -9,7 +9,7 @@ import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { ReactComponent as Logo } from "../assets/images/gsynergyLogo.svg";
+import { ReactComponent as Logo } from "../../assets/images/gsynergyLogo.svg";
 import AccountCircleSharpIcon from '@mui/icons-material/AccountCircleSharp';
 
 export const drawerWidth = 170;

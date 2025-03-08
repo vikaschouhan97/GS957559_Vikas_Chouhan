@@ -38,123 +38,127 @@ const DataViewer: React.FC = () => {
   const { calendarData } = useSelector((state: RootState) => state.fileData);
 
   const onGridReady = async () => {
-    const response = await fetch('/assets/file/sampleFile.xlsx');
-    const blob = await response.blob();
+    try {
+      const response = await fetch("https://res.cloudinary.com/dga7peviw/raw/upload/v1741378505/GSIV25_-_Sample_Data_bzxej5.xlsx");
+      const blob = await response.blob();
+      if (!blob) return;
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(blob);
 
-    if (!blob) return;
+      reader.onload = (e) => {
+        const arrayBuffer = e.target?.result as ArrayBuffer;
+        const workbook = XLSX.read(new Uint8Array(arrayBuffer), {
+          type: "array",
+        });
 
-    const reader = new FileReader();
+        // Read "Calendar" worksheet
+        const calendarSheet = workbook.Sheets["Calendar"];
+        const calendarData: any[] = XLSX.utils.sheet_to_json(calendarSheet);
 
-    reader.onload = (e) => {
-      const binaryStr = e.target?.result as string;
-      const workbook = XLSX.read(binaryStr, { type: "binary" });
+        // Read "Planning" worksheet
+        const planningSheet = workbook.Sheets["Planning"];
+        const planningData: any[] = XLSX.utils.sheet_to_json(planningSheet);
 
-      // Read "Calendar" worksheet
-      const calendarSheet = workbook.Sheets["Calendar"];
-      const calendarData: any[] = XLSX.utils.sheet_to_json(calendarSheet);
+        // Read "SKUs" worksheet to get prices
+        const skusSheet = workbook.Sheets["SKUs"];
+        const skusData: any[] = XLSX.utils.sheet_to_json(skusSheet);
 
-      // Read "Planning" worksheet
-      const planningSheet = workbook.Sheets["Planning"];
-      const planningData: any[] = XLSX.utils.sheet_to_json(planningSheet);
+        // Create a lookup map for SKU prices
+        const skuPriceMap: Record<string, any> = {};
+        skusData.forEach(({ ID, Label, Price, Cost }) => {
+          skuPriceMap[ID] = {
+            price: parseFloat(Price),
+            Label,
+            cost: parseFloat(Cost),
+          }; // Store SKU price
+        });
 
-      // Read "SKUs" worksheet to get prices
-      const skusSheet = workbook.Sheets["SKUs"];
-      const skusData: any[] = XLSX.utils.sheet_to_json(skusSheet);
+        // Read "Store" worksheet to get Labels
+        const storesSheet = workbook.Sheets["Stores"];
+        const storeData: any[] = XLSX.utils.sheet_to_json(storesSheet);
 
-      // Create a lookup map for SKU prices
-      const skuPriceMap: Record<string, any> = {};
-      skusData.forEach(({ ID, Label, Price, Cost }) => {
-        skuPriceMap[ID] = {
-          price: parseFloat(Price),
-          Label,
-          cost: parseFloat(Cost),
-        }; // Store SKU price
-      });
+        const storeMap: Record<string, number> = {};
+        storeData.forEach(({ ID, Label }) => {
+          storeMap[ID] = Label; // Store SKU price
+        });
 
-      // Read "Store" worksheet to get Labels
-      const storesSheet = workbook.Sheets["Stores"];
-      const storeData: any[] = XLSX.utils.sheet_to_json(storesSheet);
+        // Extract Month & Week order from Calendar sheet
+        const monthOrder: string[] = [];
+        const weekOrder: string[] = [];
+        const groupedData: { [month: string]: any } = {};
 
-      const storeMap: Record<string, number> = {};
-      storeData.forEach(({ ID, Label }) => {
-        storeMap[ID] = Label; // Store SKU price
-      });
+        calendarData.forEach((row) => {
+          const {
+            "Month Label": monthLabel,
+            "Week Label": weekLabel,
+            Week,
+          } = row;
 
-      // Extract Month & Week order from Calendar sheet
-      const monthOrder: string[] = [];
-      const weekOrder: string[] = [];
-      const groupedData: { [month: string]: any } = {};
+          if (!monthOrder.includes(monthLabel)) monthOrder.push(monthLabel);
+          if (!weekOrder.includes(Week)) weekOrder.push(Week);
 
-      calendarData.forEach((row) => {
-        const {
-          "Month Label": monthLabel,
-          "Week Label": weekLabel,
-          Week,
-        } = row;
+          if (!groupedData[monthLabel]) {
+            groupedData[monthLabel] = { headerName: monthLabel, children: [] };
+          }
 
-        if (!monthOrder.includes(monthLabel)) monthOrder.push(monthLabel);
-        if (!weekOrder.includes(Week)) weekOrder.push(Week);
+          let weekData = groupedData[monthLabel].children.find(
+            (w: any) => w.week === Week
+          );
+          if (!weekData) {
+            weekData = { headerName: weekLabel, week: Week, children: [] };
+            groupedData[monthLabel].children.push(weekData);
+          }
+        });
 
-        if (!groupedData[monthLabel]) {
-          groupedData[monthLabel] = { headerName: monthLabel, children: [] };
-        }
+        // Merge Planning data into groupedData and compute Sales Dollar
+        planningData.forEach(
+          ({ Store, SKU, Week, "Sales Units": SalesUnits }) => {
+            const price = skuPriceMap[SKU].price || 0; // Get price, default to 0 if not found
+            const cost = skuPriceMap[SKU].cost || 0;
+            const skuLabel = skuPriceMap[SKU].Label;
+            const storeLabel = storeMap[Store];
+            const salesDollar = price * SalesUnits; // Compute Sales Dollar
+            const gmDollar = salesDollar - SalesUnits * cost;
+            const gmPercent = Math.trunc((gmDollar / salesDollar) * 100) || 0;
 
-        let weekData = groupedData[monthLabel].children.find(
-          (w: any) => w.week === Week
+            Object.values(groupedData).forEach((monthData: any) => {
+              const weekData = monthData.children.find(
+                (w: any) => w.week === Week
+              );
+              if (weekData) {
+                weekData.children.push({
+                  Store,
+                  SKU,
+                  SalesUnits,
+                  SalesDollar: salesDollar.toFixed(2),
+                  skuLabel,
+                  storeLabel,
+                  gmDollar: gmDollar.toFixed(2),
+                  gmPercent,
+                });
+              }
+            });
+          }
         );
-        if (!weekData) {
-          weekData = { headerName: weekLabel, week: Week, children: [] };
-          groupedData[monthLabel].children.push(weekData);
-        }
-      });
 
-      // Merge Planning data into groupedData and compute Sales Dollar
-      planningData.forEach(
-        ({ Store, SKU, Week, "Sales Units": SalesUnits }) => {
-          const price = skuPriceMap[SKU].price || 0; // Get price, default to 0 if not found
-          const cost = skuPriceMap[SKU].cost || 0;
-          const skuLabel = skuPriceMap[SKU].Label;
-          const storeLabel = storeMap[Store];
-          const salesDollar = price * SalesUnits; // Compute Sales Dollar
-          const gmDollar = salesDollar - SalesUnits * cost;
-          const gmPercent = Math.trunc((gmDollar / salesDollar) * 100) || 0;
+        // Sort by monthOrder and then by weekOrder
+        const sortedData = monthOrder
+          .map((month) => groupedData[month])
+          .filter(Boolean) // Remove undefined entries
+          .map((monthData) => ({
+            ...monthData,
+            children: monthData.children.sort(
+              (a: any, b: any) =>
+                weekOrder.indexOf(a.week) - weekOrder.indexOf(b.week)
+            ),
+          }));
 
-          Object.values(groupedData).forEach((monthData: any) => {
-            const weekData = monthData.children.find(
-              (w: any) => w.week === Week
-            );
-            if (weekData) {
-              weekData.children.push({
-                Store,
-                SKU,
-                SalesUnits,
-                SalesDollar: salesDollar.toFixed(2),
-                skuLabel,
-                storeLabel,
-                gmDollar: gmDollar.toFixed(2),
-                gmPercent,
-              });
-            }
-          });
-        }
-      );
-
-      // Sort by monthOrder and then by weekOrder
-      const sortedData = monthOrder
-        .map((month) => groupedData[month])
-        .filter(Boolean) // Remove undefined entries
-        .map((monthData) => ({
-          ...monthData,
-          children: monthData.children.sort(
-            (a: any, b: any) =>
-              weekOrder.indexOf(a.week) - weekOrder.indexOf(b.week)
-          ),
-        }));
-
-      dispatch(setCalendarData(sortedData));
-    };
-
-    reader.readAsArrayBuffer(blob);
+        dispatch(setCalendarData(sortedData));
+      };
+    } catch (error) {
+      //eslint-disable-next-line
+      console.error("Error fetching data:", error);
+    }
   };
 
   const [rowData, setRowData] = useState(

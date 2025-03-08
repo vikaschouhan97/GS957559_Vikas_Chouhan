@@ -12,7 +12,7 @@ interface ICalendarData {
   children: IWeek[];
 }
 
-interface IStoreData {
+export interface IStoreData {
   seqNo: number;
   ID: string;
   Label: string;
@@ -20,14 +20,23 @@ interface IStoreData {
   State: string;
 }
 
+export interface ISkuData {
+  ID: string;
+  name: string;
+  price: string;
+  cost: string;
+}
+
 interface IExcelState {
   calendarData: ICalendarData[];
   storeData: IStoreData[];
+  skuData: ISkuData[];
 }
 
 const initialState: IExcelState = {
   calendarData: [],
   storeData: [],
+  skuData: [],
 };
 
 const excelDataSlice = createSlice({
@@ -40,8 +49,11 @@ const excelDataSlice = createSlice({
     setStoreData: (state, action: PayloadAction<any[]>) => {
         state.storeData = action.payload;
     },
+    setSkuData: (state, action: PayloadAction<any[]>) => {
+        state.skuData = action.payload;
+    },
   },
 });
 
-export const { setCalendarData, setStoreData } = excelDataSlice.actions;
+export const { setCalendarData, setStoreData, setSkuData } = excelDataSlice.actions;
 export const reducer = excelDataSlice.reducer;
