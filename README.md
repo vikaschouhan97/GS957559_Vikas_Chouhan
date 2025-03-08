@@ -33,6 +33,23 @@ To run tests, use the following command:
 npm run test
 ```
 
+## CI/CD Pipeline
+
+You can check the commits through the ci/cd pipeline of github inside the Actions tab. The pipeline consist of following actions -
+
+- npm run install // To install all the dependencies
+- npm run test // To test the testcases written for component
+- npm run build // To build the application
+
+### **Worksheet Names and Column Order**
+
+1. **Stores** - `Seq No.`, `ID`, `Label`, `City`, `State`
+2. **SKUs** - `ID`, `Label`, `Class`, `Department`, `Price`, `Cost`
+3. **Calendar** - `Seq No.`, `Week`, `Week Label`, `Month`, `Month Label`
+4. **Planning** - `Store`, `SKU`, `Week`, `Sales Units`
+
+Please ensure that your file follows this structure before uploading to avoid errors.
+
 ## Challenges and Learning Experience
 
 During this project, I encountered several challenges that helped me grow and refine my skills:
@@ -43,9 +60,9 @@ During this project, I encountered several challenges that helped me grow and re
 
 I hope you will like this project and appreciate the effort and dedication that went into building it.
 
-# If I had 4 more hours then
+## If I had 4 more hours then
 
-- I will write more test cases for different comopnents.
+- I will write more test cases for different components.
 - Write common functions for reading and storing data of excel files.
 - Making user authentication dynamic and adding OAuth logins with it.
 

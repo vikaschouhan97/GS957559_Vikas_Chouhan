@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { AgGridReact } from "ag-grid-react";
 import {
   ClientSideRowModelModule,
@@ -39,7 +39,9 @@ ModuleRegistry.registerModules([
 const GridExample = () => {
   const dispatch = useDispatch();
   const [gridApi, setGridApi] = useState<any>(null);
-  const { skuData } = useSelector((state: RootState) => state.fileData);
+  const { skuData, fileAdded } = useSelector(
+    (state: RootState) => state.fileData
+  );
 
   // Memoized styles to prevent unnecessary re-renders
   const containerStyle = useMemo(() => ({ width: "100%", height: "100%" }), []);
@@ -75,6 +77,12 @@ const GridExample = () => {
     width: 170,
     valueSetter: handleValueSetter, // Assign custom value setter
   };
+
+  useEffect(() => {
+    if (gridApi) {
+      onGridReady({ api: gridApi } as GridReadyEvent);
+    }
+  }, [fileAdded, gridApi]);
 
   // Handles grid initialization and data fetching
   const onGridReady = useCallback(async (params: GridReadyEvent) => {

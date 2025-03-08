@@ -3,6 +3,7 @@ import { AgGridReact } from "ag-grid-react";
 import {
   CellStyleModule,
   ClientSideRowModelModule,
+  GridReadyEvent,
   ModuleRegistry,
   NumberEditorModule,
   TextEditorModule,
@@ -42,10 +43,18 @@ export const MainWrapper = styled(Box)(() => ({
 const DataViewer: React.FC = () => {
   const dispatch = useDispatch();
   const [currentMonthIndex] = useState(0);
-  const { calendarData } = useSelector((state: RootState) => state.fileData);
+  const [gridApi, setGridApi] = useState<any>(null);
+  const { calendarData, fileAdded } = useSelector((state: RootState) => state.fileData);
+
+   useEffect(() => {
+      if (gridApi) {
+        onGridReady({ api: gridApi } as GridReadyEvent);
+      }
+    }, [fileAdded, gridApi]);
 
   // Fetch and process Excel data on grid initialization
-  const onGridReady = async () => {
+  const onGridReady = async (params: GridReadyEvent) => {
+    setGridApi(params.api);
     try {
       const localFile = localStorage.getItem("file");
       let blob: Blob;

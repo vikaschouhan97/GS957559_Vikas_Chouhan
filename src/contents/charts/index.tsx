@@ -18,12 +18,18 @@ const ChartExample = () => {
   const [currentData, setCurrentData] = useState<{ [key: string]: any[] }>({});
   const [selectedStore, setSelectedStore] = useState<string>("");
 
-  const { storeData } = useSelector((state: RootState) => state.fileData);
+  const { storeData, fileAdded } = useSelector(
+    (state: RootState) => state.fileData
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
-    handleFileUpload(); // Load and process the Excel file on component mount
+    handleFileUpload();
   }, []);
+
+  useEffect(() => {
+    handleFileUpload();
+  }, [fileAdded]);
 
   const handleFileUpload = async () => {
     const localFile = localStorage.getItem("file");

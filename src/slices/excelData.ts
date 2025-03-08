@@ -37,6 +37,7 @@ interface IExcelState {
   loader: boolean;
   addStoreDialog: boolean;
   addSkuDialog: boolean;
+  fileAdded: boolean;
 }
 
 const initialState: IExcelState = {
@@ -46,6 +47,7 @@ const initialState: IExcelState = {
   loader: false,
   addStoreDialog: false,
   addSkuDialog: false,
+  fileAdded: false,
 };
 
 const excelDataSlice = createSlice({
@@ -70,10 +72,20 @@ const excelDataSlice = createSlice({
     setAddSkuDialog: (state, action: PayloadAction<boolean>) => {
       state.addSkuDialog = action.payload;
     },
+    setFileAdded: (state, action: PayloadAction<boolean>) => {
+      state.fileAdded = action.payload;
+    },
   },
 });
 
-export const { setCalendarData, setStoreData, setSkuData, setExcelDataLoader, setAddStoreDialog, setAddSkuDialog } =
-  excelDataSlice.actions;
+export const {
+  setCalendarData,
+  setStoreData,
+  setSkuData,
+  setExcelDataLoader,
+  setAddStoreDialog,
+  setAddSkuDialog,
+  setFileAdded
+} = excelDataSlice.actions;
 
 export const reducer = excelDataSlice.reducer;

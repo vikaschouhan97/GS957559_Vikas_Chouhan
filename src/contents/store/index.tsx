@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { AgGridReact } from "ag-grid-react";
 import {
   ClientSideRowModelModule,
@@ -62,7 +62,8 @@ export const DeleteButtonRenderer = (props: any) => {
 
 const GridExample = () => {
   const dispatch = useDispatch();
-  const { storeData } = useSelector((state: RootState) => state.fileData);
+  const { storeData, fileAdded } = useSelector((state: RootState) => state.fileData);
+  const [gridApi, setGridApi] = useState<any>(null);
 
   // Memoized styles to optimize performance
   const containerStyle = useMemo(() => ({ width: "100%", height: "100%" }), []);
@@ -106,58 +107,67 @@ const GridExample = () => {
     valueSetter: handleValueSetter,
   };
 
-  // Function to handle grid initialization and loading data
-  const onGridReady = useCallback(async (params: GridReadyEvent) => {
-    setGridApi(params.api);
-
-    // Retrieve file data from localStorage if available
-    const localFile = localStorage.getItem("file");
-    let blob: Blob;
-
-    if (localFile) {
-      const base64Data = JSON.parse(localFile);
-      const byteCharacters = atob(base64Data.split(",")[1]);
-      const byteNumbers = new Array(byteCharacters.length);
-      for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
-      }
-      const byteArray = new Uint8Array(byteNumbers);
-      blob = new Blob([byteArray], {
-        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      });
-    } else {
-      // Fetch default Excel file if local data is unavailable
-      const response = await fetch(excelLinkUrl);
-      blob = await response.blob();
+  useEffect(() => {
+    if (gridApi) {
+      onGridReady({ api: gridApi } as GridReadyEvent);
     }
+  }, [fileAdded, gridApi]);
 
-    if (!blob) return;
+  // Function to handle grid initialization and loading data
+  const onGridReady = useCallback(
+    async (params: GridReadyEvent) => {
+      setGridApi(params.api);
 
-    const reader = new FileReader();
+      // Retrieve file data from localStorage if available
+      const localFile = localStorage.getItem("file");
+      let blob: Blob;
 
-    reader.onload = (e) => {
-      const binaryStr = e.target?.result as string;
-      const workbook = XLSX.read(binaryStr, { type: "binary" });
+      if (localFile) {
+        const base64Data = JSON.parse(localFile);
+        const byteCharacters = atob(base64Data.split(",")[1]);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+          byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        blob = new Blob([byteArray], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+      } else {
+        // Fetch default Excel file if local data is unavailable
+        const response = await fetch(excelLinkUrl);
+        blob = await response.blob();
+      }
 
-      // Read "Stores" worksheet from Excel file
-      const storesSheet = workbook.Sheets["Stores"];
-      const storeData: any[] = XLSX.utils.sheet_to_json(storesSheet);
+      if (!blob) return;
 
-      // Format the data
-      const formattedStoreData: IStoreData[] = storeData.map((row, index) => ({
-        seqNo: row["Seq No."] || index + 1,
-        ID: row["ID"],
-        Label: row["Label"],
-        City: row["City"],
-        State: row["State"],
-      }));
-      dispatch(setStoreData(formattedStoreData));
-    };
+      const reader = new FileReader();
 
-    reader.readAsArrayBuffer(blob);
-  }, [localStorage.getItem("file"), dispatch]);
+      reader.onload = (e) => {
+        const binaryStr = e.target?.result as string;
+        const workbook = XLSX.read(binaryStr, { type: "binary" });
 
-  const [gridApi, setGridApi] = useState<any>(null);
+        // Read "Stores" worksheet from Excel file
+        const storesSheet = workbook.Sheets["Stores"];
+        const storeData: any[] = XLSX.utils.sheet_to_json(storesSheet);
+
+        // Format the data
+        const formattedStoreData: IStoreData[] = storeData.map(
+          (row, index) => ({
+            seqNo: row["Seq No."] || index + 1,
+            ID: row["ID"],
+            Label: row["Label"],
+            City: row["City"],
+            State: row["State"],
+          })
+        );
+        dispatch(setStoreData(formattedStoreData));
+      };
+
+      reader.readAsArrayBuffer(blob);
+    },
+    [fileAdded, dispatch]
+  );
 
   // Function to update sequence numbers when row dragging stops
   const onDragStopped = useCallback(() => {

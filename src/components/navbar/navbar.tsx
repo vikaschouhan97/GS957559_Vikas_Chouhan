@@ -16,6 +16,8 @@ import { Button } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
 import * as XLSX from "xlsx";
+import { useDispatch } from "react-redux";
+import { setFileAdded } from "../../slices/excelData";
 
 // Hidden input for file upload
 const VisuallyHiddenInput = styled("input")({
@@ -38,6 +40,7 @@ const settings = ["Logout"];
 
 function Navbar() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
   /**
@@ -56,6 +59,7 @@ function Navbar() {
     if (type === "Logout") {
       localStorage.removeItem("token");
       localStorage.removeItem("file");
+      dispatch(setFileAdded(false));
       navigate("/login");
     }
     setAnchorElUser(null);
@@ -92,6 +96,7 @@ function Navbar() {
       fileReader.readAsDataURL(file);
       fileReader.onload = () => {
         localStorage.setItem("file", JSON.stringify(fileReader.result));
+        dispatch(setFileAdded(true));
       };
       //eslint-disable-next-line
       fileReader.onerror = (error) => console.error("Error reading file:", error);
