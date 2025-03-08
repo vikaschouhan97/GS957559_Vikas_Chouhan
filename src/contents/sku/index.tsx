@@ -15,12 +15,12 @@ import {
 } from "ag-grid-community";
 import { MainWrapper } from "../planning";
 import * as XLSX from "xlsx";
-import { Box, Button } from "@mui/material";
+import { Box, Button, IconButton } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { ISkuData, setAddSkuDialog, setSkuData } from "../../slices/excelData";
 import { RootState } from "../../store";
 import "../store/index.css";
-import { DeleteButtonRenderer } from "../store";
+import DeleteForeverSharpIcon from "@mui/icons-material/DeleteForeverSharp";
 import { excelLinkUrl } from "../../constants";
 import AddSkuDialog from "./addSkuDialog";
 
@@ -35,6 +35,29 @@ ModuleRegistry.registerModules([
   TextEditorModule,
   RowApiModule,
 ]);
+
+const DeleteButtonRenderer = (props: any) => {
+  const { skuData } = useSelector((state: RootState) => state.fileData);
+  const dispatch = useDispatch();
+
+  // Function to handle deleting a row
+  const handleDelete = () => {
+    const updatedData = skuData
+      .filter((item: any) => item.ID !== props.data.ID)
+      .map((item, index) => ({
+        ...item,
+        seqNo: index + 1, // Reassign sequence numbers after deletion
+      }));
+
+    dispatch(setSkuData(updatedData));
+  };
+
+  return (
+    <IconButton onClick={handleDelete} size="small">
+      <DeleteForeverSharpIcon />
+    </IconButton>
+  );
+};
 
 const GridExample = () => {
   const dispatch = useDispatch();
