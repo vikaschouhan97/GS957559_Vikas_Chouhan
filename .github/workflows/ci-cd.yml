@@ -13,6 +13,8 @@ jobs:
           node-version: 18.x
       - name: Install Dependencies
         run: npm install
+      - name: Run Tests
+        run: npm run test
       - name: Build Project
         run: npm run build
       - name: Upload artifact to enable deployment
@@ -23,9 +25,7 @@ jobs:
 
   # Deploy Job
   deploy:
-    # Add a dependency to the build job
     needs: build
-    # Specify runner + deployment step
     runs-on: ubuntu-latest
     steps:
       - name: Download artifact

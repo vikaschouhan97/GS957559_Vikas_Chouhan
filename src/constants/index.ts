@@ -45,3 +45,5 @@ export const rightAlignRule = {
 export const defaultColDef = {
   sortable: true,
 };
+
+export const excelLinkUrl = "https://res.cloudinary.com/dga7peviw/raw/upload/v1741378505/GSIV25_-_Sample_Data_bzxej5.xlsx";

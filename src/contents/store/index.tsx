@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { IStoreData, setStoreData } from "../../slices/excelData";
 import { RootState } from "../../store";
 import "./index.css";
+import { excelLinkUrl } from "../../constants";
 
 ModuleRegistry.registerModules([
   TextFilterModule,
@@ -95,9 +96,7 @@ const GridExample = () => {
   const onGridReady = useCallback(async (params: GridReadyEvent) => {
     setGridApi(params.api);
 
-    const response = await fetch(
-      "https://res.cloudinary.com/dga7peviw/raw/upload/v1741378505/GSIV25_-_Sample_Data_bzxej5.xlsx"
-    );
+    const response = await fetch(excelLinkUrl);
     const blob = await response.blob();
 
     if (!blob) return;
