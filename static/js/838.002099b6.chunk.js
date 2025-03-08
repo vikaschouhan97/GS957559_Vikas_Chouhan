@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkmy_ts_app=self.webpackChunkmy_ts_app||[]).push([[838],{1838:(s,a,e)=>{e.r(a),e.d(a,{default:()=>t});e(2791);var p=e(184);const t=()=>(0,p.jsx)("div",{children:"Charts"})}}]);
-//# sourceMappingURL=838.002099b6.chunk.js.map
