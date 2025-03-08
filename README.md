@@ -1,46 +1,52 @@
-# Getting Started with Create React App
+# Data Viewer Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is for viewing datas across multiple Stores and SKUs
 
-## Available Scripts
+## Getting Started
 
-In the project directory, you can run:
+Follow these steps to set up and run the application:
 
-### `npm start`
+### 1. Install dependencies
+```sh
+npm install
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### 2. Start the development server
+```sh
+npm run dev
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+This will start the application in development mode. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-### `npm test`
+## Login Credentials
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+To log in, use the following credentials:
 
-### `npm run build`
+**Email:** `john@mail.com`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**Password:** `John@123`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Running Tests
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+To run tests, use the following command:
+```sh
+npm run test
+```
 
-### `npm run eject`
+## Challenges and Learning Experience
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+During this project, I encountered several challenges that helped me grow and refine my skills:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- The biggest challenge I faced was creating tables using Excel sheets, as I was not familiar with it. However, I had a great adventure working through this problem and improving my proficiency.
+- Working with the **AG Grid** library was a completely new experience for me. It took a considerable amount of time to understand its functionality, but in the end, I was able to implement it successfully.
+- The **planning and chart** part of the project was the most demanding task, as it required combining multiple sheets and performing complex calculations. Despite the difficulties, I managed to overcome these challenges through perseverance and problem-solving skills.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+I hope you will like this project and appreciate the effort and dedication that went into building it.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+# If I had 4 more hours then
 
-## Learn More
+- I will write more test cases for different comopnents.
+- Write common functions for reading and storing data of excel files.
+- Making user authentication dynamic and adding OAuth logins with it.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).

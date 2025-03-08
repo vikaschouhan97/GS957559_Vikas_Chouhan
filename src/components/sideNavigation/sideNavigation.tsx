@@ -52,6 +52,7 @@ const SideNavigation = () => {
           display: { xs: "block", sm: "none" },
           "& .MuiDrawer-paper": {
             width: drawerWidth,
+            mt: 4,
           },
         }}
       >
