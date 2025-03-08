@@ -14,7 +14,7 @@ import * as XLSX from "xlsx";
 import { useDispatch, useSelector } from "react-redux";
 import { setCalendarData } from "../../slices/excelData";
 import { RootState } from "../../store";
-import { defaultColDef, rightAlignRule, cellClassRules } from "../../constants";
+import { defaultColDef, rightAlignRule, cellClassRules, excelLinkUrl } from "../../constants";
 
 ModuleRegistry.registerModules([
   NumberEditorModule,
@@ -39,7 +39,7 @@ const DataViewer: React.FC = () => {
 
   const onGridReady = async () => {
     try {
-      const response = await fetch("https://res.cloudinary.com/dga7peviw/raw/upload/v1741378505/GSIV25_-_Sample_Data_bzxej5.xlsx");
+      const response = await fetch(excelLinkUrl);
       const blob = await response.blob();
       if (!blob) return;
       const reader = new FileReader();
