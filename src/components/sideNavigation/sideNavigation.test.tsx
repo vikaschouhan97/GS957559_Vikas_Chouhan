@@ -4,7 +4,7 @@ import { MemoryRouter } from "react-router-dom";
 import SideNavigation from "../sideNavigation/sideNavigation";
 import { SideBarItems } from "../../constants";
 
-jest.mock("../constants", () => ({
+jest.mock("../../constants", () => ({
   SideBarItems: [
     { id: 1, name: "Home", link: "/home", icon: () => <svg data-testid="icon-home" /> },
     { id: 2, name: "Profile", link: "/profile", icon: () => <svg data-testid="icon-profile" /> },
