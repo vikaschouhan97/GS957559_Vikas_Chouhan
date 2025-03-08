@@ -64,7 +64,7 @@ describe("Navbar Component", () => {
       key === "token" ? "mock-token" : null
     );
     render(<Navbar />);
-    expect(screen.getByText("Upload files")).toBeInTheDocument();
+    expect(screen.getByText("Upload file")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /open settings/i })).toBeInTheDocument();
   });
 
