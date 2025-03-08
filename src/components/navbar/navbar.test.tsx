@@ -1,103 +1,96 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 import Navbar from "./navbar";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
-const mockStore = configureStore([]);
+// Mock dependencies
+jest.mock("react-router-dom", () => ({
+  useNavigate: jest.fn(),
+}));
+
+jest.mock("react-redux", () => ({
+  useDispatch: jest.fn(),
+}));
+
+jest.mock("xlsx", () => ({
+  read: jest.fn(),
+}));
+
+// Mock FileReader
+class MockFileReader {
+  result: any;
+  onload: () => void = () => null;
+
+  readAsBinaryString() {
+    this.onload();
+  }
+  readAsDataURL() {
+    this.onload();
+  }
+}
+
+(global as any).FileReader = MockFileReader;
 
 describe("Navbar Component", () => {
-  let store: ReturnType<typeof mockStore>;
+  const mockNavigate = jest.fn();
+  const mockDispatch = jest.fn();
 
   beforeEach(() => {
-    localStorage.clear();
-    store = mockStore({
-      auth: { isAuthenticated: false },
-    });
-
-    store.dispatch = jest.fn(); // Mock dispatch
+    (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
+    (useDispatch as jest.Mock).mockReturnValue(mockDispatch);
+    Storage.prototype.removeItem = jest.fn();
+    Storage.prototype.getItem = jest.fn();
+    Storage.prototype.setItem = jest.fn();
   });
 
-  test("renders the logo", () => {
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <Navbar />
-        </MemoryRouter>
-      </Provider>
-    );
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
+  test("1. Renders company logo", () => {
+    render(<Navbar />);
     expect(screen.getByTestId("company-logo")).toBeInTheDocument();
   });
 
-  test("shows 'Login' when user is not logged in", () => {
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <Navbar />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(screen.getByText(/login/i)).toBeInTheDocument();
+  test("2. Shows login text when not authenticated", () => {
+    (localStorage.getItem as jest.Mock).mockReturnValue(null);
+    render(<Navbar />);
+    expect(screen.getByText("Login")).toBeInTheDocument();
   });
 
-  test("shows 'Upload files' button when user is logged in", () => {
-    localStorage.setItem("token", "testToken");
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <Navbar />
-        </MemoryRouter>
-      </Provider>
+  test("3. Displays upload button and user avatar when authenticated", () => {
+    (localStorage.getItem as jest.Mock).mockImplementation((key) =>
+      key === "token" ? "mock-token" : null
     );
-
-    expect(screen.getByText(/upload files/i)).toBeInTheDocument();
+    render(<Navbar />);
+    expect(screen.getByText("Upload files")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /open settings/i })).toBeInTheDocument();
   });
 
-  test("opens the user menu on clicking the profile icon", async () => {
-    localStorage.setItem("token", "testToken");
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <Navbar />
-        </MemoryRouter>
-      </Provider>
+  test("4. Opens user menu and handles logout", async () => {
+    (localStorage.getItem as jest.Mock).mockImplementation((key) =>
+      key === "token" ? "mock-token" : null
     );
-
-    const profileButtons = screen.getAllByRole("button");
-    fireEvent.click(profileButtons[profileButtons.length - 1]);
-
-    await waitFor(() => {
-      expect(screen.getByText(/logout/i)).toBeInTheDocument();
-    });
+    render(<Navbar />);
+    
+    fireEvent.click(screen.getByRole("button", { name: /open settings/i }));
+    await waitFor(() => expect(screen.getByText("Logout")).toBeInTheDocument());
+    
+    fireEvent.click(screen.getByText("Logout"));
+    
+    expect(localStorage.removeItem).toHaveBeenCalledWith("token");
+    expect(localStorage.removeItem).toHaveBeenCalledWith("file");
+    expect(mockNavigate).toHaveBeenCalledWith("/login");
   });
 
-  test("logs out the user on clicking logout", async () => {
-    localStorage.setItem("token", "testToken");
-    localStorage.setItem("file", "testFile");
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <Navbar />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    const profileButtons = screen.getAllByRole("button");
-    fireEvent.click(profileButtons[profileButtons.length - 1]);
-
-    const logoutButton = await screen.findByText(/logout/i);
-    fireEvent.click(logoutButton);
-
-    await waitFor(() => {
-      expect(localStorage.getItem("token")).toBeNull();
-      expect(localStorage.getItem("file")).toBeNull();
-      expect(store.dispatch).toHaveBeenCalledTimes(1); // Ensure Redux dispatch is triggered
-    });
+  test("5. Navigates to login page after logout", async () => {
+    (localStorage.getItem as jest.Mock).mockReturnValue("mock-token");
+    render(<Navbar />);
+    
+    fireEvent.click(screen.getByRole("button", { name: /open settings/i }));
+    fireEvent.click(await screen.findByText("Logout"));
+    
+    expect(mockNavigate).toHaveBeenCalledWith("/login");
   });
 });

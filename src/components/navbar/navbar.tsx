@@ -135,7 +135,7 @@ function Navbar() {
                   sx={{ height: "32px" }}
                 >
                   Upload files
-                  <VisuallyHiddenInput type="file" onChange={handleFileUpload} multiple />
+                  <VisuallyHiddenInput type="file" onChange={handleFileUpload} multiple data-testid="file-input" />
                 </Button>
               </Box>
             )}
