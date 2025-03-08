@@ -3,7 +3,10 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface IWeek {
   headerName: string;
   week: string;
-  children: [{ Store: string; SKU: string; SalesUnits: string }, { Store: string; SKU: string; SalesUnits: string }];
+  children: [
+    { Store: string; SKU: string; SalesUnits: string },
+    { Store: string; SKU: string; SalesUnits: string }
+  ];
 }
 
 interface ICalendarData {
@@ -31,12 +34,14 @@ interface IExcelState {
   calendarData: ICalendarData[];
   storeData: IStoreData[];
   skuData: ISkuData[];
+  loader: boolean;
 }
 
 const initialState: IExcelState = {
   calendarData: [],
   storeData: [],
   skuData: [],
+  loader: false,
 };
 
 const excelDataSlice = createSlice({
@@ -44,16 +49,21 @@ const excelDataSlice = createSlice({
   initialState,
   reducers: {
     setCalendarData: (state, action: PayloadAction<any[]>) => {
-        state.calendarData = action.payload;
+      state.calendarData = action.payload;
     },
     setStoreData: (state, action: PayloadAction<any[]>) => {
-        state.storeData = action.payload;
+      state.storeData = action.payload;
     },
     setSkuData: (state, action: PayloadAction<any[]>) => {
-        state.skuData = action.payload;
+      state.skuData = action.payload;
+    },
+    setExcelDataLoader: (state, action: PayloadAction<boolean>) => {
+      state.loader = action.payload;
     },
   },
 });
 
-export const { setCalendarData, setStoreData, setSkuData } = excelDataSlice.actions;
+export const { setCalendarData, setStoreData, setSkuData, setExcelDataLoader } =
+  excelDataSlice.actions;
+  
 export const reducer = excelDataSlice.reducer;

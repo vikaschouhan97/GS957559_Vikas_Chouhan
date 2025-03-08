@@ -1,34 +1,39 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import BaseLayout from './components/base-layout';
 import SuspenseLoader from './components/loader/suspense-loader';
 import { lazy, Suspense } from 'react';
 
-const Loader = (Component: any) => (props: any) =>
-(
+const Loader = (Component: any) => (props: any) => (
     <Suspense fallback={<SuspenseLoader />}>
         <Component {...props} />
     </Suspense>
 );
 
-const HomePage = Loader(lazy(() => import("./contents/homepage")));
 const StorePage = Loader(lazy(() => import("./contents/store")));
 const SkuPage = Loader(lazy(() => import("./contents/sku")));
 const PlanningPage = Loader(lazy(() => import("./contents/planning")));
 const ChartsPage = Loader(lazy(() => import("./contents/charts")));
+const LoginPage = Loader(lazy(() => import("./contents/login")));
 const PageNotFound = Loader(lazy(() => import("./components/page-not-found")));
+
+const RequireAuth = ({ children }: { children: JSX.Element }) => {
+    const token = localStorage.getItem('token');
+    return token ? children : <Navigate to="/login" replace />;
+};
 
 export const router = createBrowserRouter([
     {
         path: '/',
-        element: <BaseLayout />,
+        element: <Navigate to="/store" replace />,
+    },
+    {
+        path: '/login',
+        element: <LoginPage />,
         errorElement: <PageNotFound />,
-        children: [
-            { index: true, element: <HomePage /> },
-        ]
     },
     {
         path: '/store',
-        element: <BaseLayout />,
+        element: <RequireAuth><BaseLayout /></RequireAuth>,
         errorElement: <PageNotFound />,
         children: [
             { index: true, element: <StorePage /> },
@@ -36,7 +41,7 @@ export const router = createBrowserRouter([
     },
     {
         path: '/sku',
-        element: <BaseLayout />,
+        element: <RequireAuth><BaseLayout /></RequireAuth>,
         errorElement: <PageNotFound />,
         children: [
             { index: true, element: <SkuPage /> },
@@ -44,7 +49,7 @@ export const router = createBrowserRouter([
     },
     {
         path: '/planning',
-        element: <BaseLayout />,
+        element: <RequireAuth><BaseLayout /></RequireAuth>,
         errorElement: <PageNotFound />,
         children: [
             { index: true, element: <PlanningPage /> },
@@ -52,7 +57,7 @@ export const router = createBrowserRouter([
     },
     {
         path: '/charts',
-        element: <BaseLayout />,
+        element: <RequireAuth><BaseLayout /></RequireAuth>,
         errorElement: <PageNotFound />,
         children: [
             { index: true, element: <ChartsPage /> },

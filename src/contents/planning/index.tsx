@@ -178,9 +178,9 @@ const DataViewer: React.FC = () => {
   const columnDefs: (ColDef | ColGroupDef)[] = [
     { headerName: "Store", field: "storeLabel", pinned: "left", width: 250 },
     { headerName: "SKU", field: "skuLabel", pinned: "left", width: 250 },
-    {
-      headerName: calendarData[currentMonthIndex]?.headerName,
-      children: calendarData[currentMonthIndex]?.children?.map((item) => ({
+    ...((calendarData ?? []).map((month) => ({
+      headerName: month.headerName,
+      children: (month.children ?? []).map((item) => ({
         headerName: item.headerName,
         children: [
           {
@@ -192,29 +192,30 @@ const DataViewer: React.FC = () => {
           {
             headerName: "Sales Dollars",
             field: "SalesDollar",
-            valueFormatter: (params) => `$${params.value}`,
+            valueFormatter: (params: any): any => `$${params.value}`,
             cellStyle: rightAlignRule,
             width: 130,
           },
           {
             headerName: "GM Dollars",
             field: "gmDollar",
-            valueFormatter: (params) => `$${params.value}`,
+            valueFormatter: (params: {value: number}) => `$${params.value}`,
             cellStyle: rightAlignRule,
             width: 130,
           },
           {
             headerName: "GM Percent",
             field: "gmPercent",
-            valueFormatter: (params) => `${params.value}%`,
+            valueFormatter: (params: {value: number}) => `${params.value}%`,
             cellStyle: rightAlignRule,
             cellClassRules,
             width: 130,
           },
         ],
       })),
-    },
+    }))),
   ];
+  
 
   return (
     <MainWrapper>
